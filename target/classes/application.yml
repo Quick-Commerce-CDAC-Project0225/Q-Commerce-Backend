@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: QUICK-COMMERCE-SERVER
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/quick_commerce
+    username: D1_89302_jitendra
+    password: manager
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  security:
+    enabled: false
+
+  devtools:
+    restart:
+      enabled: true
+
+  web:
+    resources:
+      add-mappings: false
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    com.sunbeam: TRACE
+    org.springframework.security: DEBUG
+
+jwt:
+  secret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMTIzIiwiaWF0IjoxNjkxMjM0NTY3LCJleHAiOjE3MjEyMzQ1Njd9.Gh1ZMzGkxflF3UQwzK79uVf5_TLpDhH_4hzlP4FJbW8
