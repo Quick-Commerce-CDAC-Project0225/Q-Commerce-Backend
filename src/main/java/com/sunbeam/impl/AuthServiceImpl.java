@@ -3,6 +3,7 @@ package com.sunbeam.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,10 @@ public class AuthServiceImpl implements AuthService {
 
 		addCookie(response, "access_token", accessToken, ACCESS_TOKEN_EXPIRATION);
 		addCookie(response, "refresh_token", refreshToken, REFRESH_TOKEN_EXPIRATION);
+		
+		 HttpHeaders headers = new HttpHeaders();
+		    headers.set("Authorization", "Bearer " + accessToken); // ✅ access token in Authorization header
+		    headers.set("X-Refresh-Token", refreshToken); 
 
 		log.info("User logged in successfully: {}", email);
 		return user.get();
@@ -68,6 +73,7 @@ public class AuthServiceImpl implements AuthService {
 		log.info("Entering register method for email: {}", userData.getEmail());
 
 		String email = userData.getEmail();
+		String phone = userData.getPhone();
 		String password = userData.getPassword();
 		Optional<User> user = userRepo.findByEmailAndEnabledTrue(email);
 
@@ -78,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		User newUser = User.builder().name(userData.getName()).email(userData.getEmail())
-				.password(passwordEncoder.encode(password)).role(userData.getRole()).enabled(true).build();
+				.password(passwordEncoder.encode(password)).phone(userData.getPhone()).role(userData.getRole()).enabled(true).build();
 
 		User savedUser = userRepo.save(newUser);
 		log.info("User registered successfully: {}", savedUser.getEmail());

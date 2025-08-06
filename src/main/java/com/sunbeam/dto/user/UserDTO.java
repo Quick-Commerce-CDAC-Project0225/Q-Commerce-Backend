@@ -18,6 +18,7 @@ public class UserDTO {
 	private Long id;
 	private String name;
 	private String email;
+	private String phone;
 	private Role role;
 	private Instant created_at;
 	private Instant updated_at;
@@ -26,6 +27,7 @@ public class UserDTO {
 		this.id = user.getId();
 		this.name = user.getName();
 		this.email = user.getEmail();
+		this.phone = user.getPhone();
 		this.role = user.getRole();
 		this.created_at = user.getCreatedAt();
 		this.updated_at = user.getUpdatedAt();
