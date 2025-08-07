@@ -44,7 +44,7 @@ public class SecurityConfig {
 				).cors(cors -> cors.configurationSource(request -> {
 					CorsConfiguration config = new CorsConfiguration();
 					config.setAllowedOriginPatterns(List.of("*")); // Allow all origins
-					config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+					config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 					config.setAllowedHeaders(List.of("*")); // Allow all headers
 					config.setAllowCredentials(true); // Allow cookies or Authorization header
 					return config;
