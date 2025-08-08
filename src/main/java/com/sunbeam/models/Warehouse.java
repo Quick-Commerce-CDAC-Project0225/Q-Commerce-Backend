@@ -25,9 +25,9 @@ public class Warehouse {
 	private Long id;
 
 	private String name;
-	private String pincode;
-    private int status;
-    
+	private String area;      
+	private int status;
+
 	@CreationTimestamp
 	@Column(updatable = false, nullable = false)
 	private Instant createdAt;
