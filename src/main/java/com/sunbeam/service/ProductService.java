@@ -1,21 +1,19 @@
 package com.sunbeam.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-
-import com.sunbeam.dto.product.ProductDTO;
 import com.sunbeam.models.Product;
+import org.springframework.data.domain.Page;
 
-@Service
+import java.util.List;
+
 public interface ProductService {
-	Product addProduct(ProductDTO product);
+    Product addProduct(com.sunbeam.dto.product.ProductDTO dto);
+    Product getProductById(Long id);
+    Product updateProductById(Long id, com.sunbeam.dto.product.ProductDTO dto);
+    boolean deleteProductById(Long id);
 
-	Product getProductById(Long id);
+    Page<Product> getProducts(int page, int size, String sortProp, String sortDir);
 
-	Page<Product> getProducts(int page, int size, String orderBy, String direction);
-
-	boolean deleteProductById(Long id);
-
-	Product updateProductById(Long id, ProductDTO product);
-
+    // Make sure this returns a non-null List
+    List<Product> getAllProducts();
 }
+

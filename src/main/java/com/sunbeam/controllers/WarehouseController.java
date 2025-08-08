@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/stores")
+@RequestMapping("api/v1/warehouses")
 @RequiredArgsConstructor
 @Slf4j
 @CrossOrigin
