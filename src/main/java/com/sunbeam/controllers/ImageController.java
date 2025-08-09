@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Lazy
 public class ImageController {
-	private static final String IMAGE_DIR = "src/main/resources/static/images/";
+	private static final String IMAGE_DIR = "static/images/";
 
 	private final ImageService imageService;
 
@@ -89,18 +89,34 @@ public class ImageController {
 
 	@GetMapping("/{folder}/{filename:.+}")
 	public ResponseEntity<Resource> getImage(@PathVariable String folder, @PathVariable String filename)
-			throws IOException {
-		Path imagePath = Paths.get(IMAGE_DIR + folder + "/" + filename);
-		if (!Files.exists(imagePath)) {
-			return ResponseEntity.notFound().build();
-		}
+	        throws IOException {
+	    if (filename.contains("..") || folder.contains("..")) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Prevent directory traversal
+	    }
 
-		Resource resource = new UrlResource(imagePath.toUri());
-		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).header("Cache-Control", "public, max-age=31536000") // Cache
-																															// for
-																															// 1
-																															// year
-				.header("ETag", String.valueOf(Files.getLastModifiedTime(imagePath).toMillis())).body(resource);
+	    Path imagePath = Paths.get(IMAGE_DIR + folder + "/" + filename);
+	    System.out.println(imagePath);
 
+	    if (!Files.exists(imagePath)) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    Resource resource = new UrlResource(imagePath.toUri());
+
+	    // Determine content type based on file extension
+	    String extension = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+	    MediaType mediaType = MediaType.IMAGE_JPEG; // Default type
+	    if ("png".equals(extension)) {
+	        mediaType = MediaType.IMAGE_PNG;
+	    } else if ("gif".equals(extension)) {
+	        mediaType = MediaType.IMAGE_GIF;
+	    }
+
+	    return ResponseEntity.ok()
+	            .contentType(mediaType)
+	            .header("Cache-Control", "public, max-age=31536000")
+	            .header("ETag", String.valueOf(Files.getLastModifiedTime(imagePath).toMillis()))
+	            .body(resource);
 	}
+
 }

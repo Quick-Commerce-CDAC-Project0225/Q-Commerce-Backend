@@ -25,7 +25,7 @@ spring:
 
   web:
     resources:
-      add-mappings: false
+      add-mappings: true  # Ensure this is set to true or remove it entirely.
 
 logging:
   level:
