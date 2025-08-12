@@ -46,22 +46,20 @@ pipeline {
       }
     }
 
-    stage('Deploy to EC2') {
-      steps {
-        sshagent(credentials: ['ec2-ssh']) {
-          sh """
-            ssh -o StrictHostKeyChecking=no ${APP_HOST} '
-              cd /opt/quick &&
-              docker login -u ${DH_USR} -p ${DH_PSW} &&
-              docker compose pull backend &&
-              docker compose up -d backend &&
-              docker image prune -f
-            '
-          """
-        }
-      }
-    }
+    stage('Deploy') {
+  steps {
+    sh '''
+      set -e
+      # ensure Jenkins can read the files even if owned by ubuntu
+      test -r /opt/quick/docker-compose.yml && test -r /opt/quick/.env || true
+
+      echo "$DH_PSW" | docker login -u "$DH_USR" --password-stdin
+      docker compose -f /opt/quick/docker-compose.yml --env-file /opt/quick/.env pull backend
+      docker compose -f /opt/quick/docker-compose.yml --env-file /opt/quick/.env up -d backend
+      docker image prune -f
+    '''
   }
+}
 
   post {
     success {
