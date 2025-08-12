@@ -37,9 +37,9 @@ public class SecurityConfig {
 		http.csrf(AbstractHttpConfigurer::disable) // Disable CSRF since we use JWT
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No
 																												// sessions
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**").permitAll() // Public auth
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**","/api/v1/products/**").permitAll() // Public auth
 						// endpoints
-						.requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll() // Allow public access to
+						.requestMatchers(HttpMethod.GET, "/images/**").permitAll() // Allow public access to
 																							// images
 						.anyRequest().authenticated() // Require authentication for everything else
 				).cors(cors -> cors.configurationSource(request -> {

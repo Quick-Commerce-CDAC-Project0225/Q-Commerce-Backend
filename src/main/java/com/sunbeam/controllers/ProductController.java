@@ -179,7 +179,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<PaginatedResponseDTO<ProductDTO>> getProducts(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "50") int size,
             @RequestParam(defaultValue = "updatedAt-desc") String orderBy) {
 
         log.info("Fetching products - Page: {}, Size: {}, OrderBy: {}", page, size, orderBy);
