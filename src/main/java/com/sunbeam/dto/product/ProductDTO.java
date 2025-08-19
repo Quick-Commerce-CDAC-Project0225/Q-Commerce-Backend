@@ -3,6 +3,7 @@ package com.sunbeam.dto.product;
 import java.time.Instant;
 import java.util.List;
 
+import com.sunbeam.models.Category;
 import com.sunbeam.models.Product;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +19,8 @@ public class ProductDTO {
 	private Long productId;
 	private String name;
 	private String description;
-	private Double price;
+        private Double price;
+        private Category category;
 	private Instant updatedAt;
 	private Instant createdAt;
 	private List<String> images;
@@ -28,7 +30,8 @@ public class ProductDTO {
 		this.name = product.getName();
 		this.images = product.getImageUrls();
 		this.description = product.getDescription();
-		this.price = product.getPrice();
+                this.price = product.getPrice();
+                this.category = product.getCategory();
 		this.createdAt = product.getCreatedAt();
 		this.updatedAt = product.getUpdatedAt();
 	}

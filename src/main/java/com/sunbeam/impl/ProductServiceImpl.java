@@ -22,6 +22,7 @@ public class ProductServiceImpl implements ProductService {
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .price(dto.getPrice())
+                .category(dto.getCategory())
                 .build();
         return productRepo.save(p);
     }
@@ -37,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
         p.setName(dto.getName());
         p.setDescription(dto.getDescription());
         p.setPrice(dto.getPrice());
+        p.setCategory(dto.getCategory());
         return productRepo.save(p);
     }
 
