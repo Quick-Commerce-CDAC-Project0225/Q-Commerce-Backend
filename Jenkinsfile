@@ -4,7 +4,8 @@ pipeline {
   environment {
     DH              = credentials('dockerhub')       // Docker Hub creds (ID: dockerhub)
     IMAGE           = "jit0924/quick-backend"        // must match docker-compose.yml
-    DOCKER_BUILDKIT = '0'
+    DOCKER_BUILDKIT = '0'                            // disable BuildKit (no buildx needed)
+    COMPOSE_IMAGE   = 'docker/compose:2.27.0'        // compose-in-container image
   }
 
   options {
@@ -48,8 +49,22 @@ pipeline {
         sh '''
           set -e
           echo "$DH_PSW" | docker login -u "$DH_USR" --password-stdin
-          docker compose -f /opt/quick/docker-compose.yml --env-file /opt/quick/.env pull backend
-          docker compose -f /opt/quick/docker-compose.yml --env-file /opt/quick/.env up -d backend
+
+          # Run docker compose using the official docker/compose container
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v /opt/quick:/opt/quick \
+            -w /opt/quick \
+            ${COMPOSE_IMAGE} \
+            --env-file /opt/quick/.env pull backend
+
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v /opt/quick:/opt/quick \
+            -w /opt/quick \
+            ${COMPOSE_IMAGE} \
+            --env-file /opt/quick/.env up -d backend
+
           docker image prune -f
         '''
       }
