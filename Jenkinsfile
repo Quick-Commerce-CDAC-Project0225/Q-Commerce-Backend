@@ -4,7 +4,7 @@ pipeline {
   environment {
     DH              = credentials('dockerhub')       // Docker Hub creds (ID: dockerhub)
     IMAGE           = "jit0924/quick-backend"        // must match docker-compose.yml
-    DOCKER_BUILDKIT = '1'
+    DOCKER_BUILDKIT = '0'
   }
 
   options {
